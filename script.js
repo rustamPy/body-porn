@@ -247,6 +247,9 @@ function toRecipes(csvText) {
 }
 
 function isInCalorieRange(calories, range) {
+  if (range === "under-200") {
+    return calories < 200;
+  }
   if (range === "200-300") {
     return calories >= 200 && calories <= 300;
   }
