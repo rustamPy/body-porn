@@ -1,0 +1,123 @@
+:root {
+  font-family: Inter, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+  color: #1f2937;
+  background: #f3f4f6;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+body {
+  margin: 0;
+}
+
+.hero {
+  padding: 2rem 1rem;
+  text-align: center;
+  background: linear-gradient(135deg, #111827, #2563eb);
+  color: #fff;
+}
+
+.hero h1 {
+  margin: 0;
+}
+
+.layout {
+  max-width: 980px;
+  margin: 1.5rem auto;
+  padding: 0 1rem 2rem;
+  display: grid;
+  gap: 1rem;
+  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+}
+
+.card {
+  background: #fff;
+  border-radius: 12px;
+  padding: 1rem;
+  box-shadow: 0 6px 20px rgba(0, 0, 0, 0.08);
+}
+
+table {
+  width: 100%;
+  border-collapse: collapse;
+}
+
+th,
+td {
+  text-align: left;
+  padding: 0.5rem;
+  border-bottom: 1px solid #e5e7eb;
+}
+
+.calendar-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 0.75rem;
+}
+
+.calendar-header button {
+  border: none;
+  background: #e5e7eb;
+  border-radius: 8px;
+  padding: 0.35rem 0.6rem;
+  cursor: pointer;
+}
+
+.calendar-grid {
+  display: grid;
+  grid-template-columns: repeat(7, 1fr);
+  gap: 0.4rem;
+  font-size: 0.85rem;
+}
+
+.day-name,
+.day-cell {
+  text-align: center;
+  padding: 0.35rem;
+  border-radius: 8px;
+}
+
+.day-name {
+  font-weight: 600;
+  color: #4b5563;
+}
+
+.day-cell {
+  background: #f9fafb;
+}
+
+.day-cell.today {
+  background: #2563eb;
+  color: #fff;
+  font-weight: 700;
+}
+
+.intake-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(130px, 1fr));
+  gap: 0.75rem;
+}
+
+.intake-item {
+  background: #eff6ff;
+  padding: 0.75rem;
+  border-radius: 10px;
+}
+
+.intake-item p {
+  margin: 0;
+}
+
+.intake-item .label {
+  font-size: 0.85rem;
+  color: #374151;
+}
+
+.intake-item .value {
+  font-size: 1.1rem;
+  font-weight: 700;
+  margin-top: 0.2rem;
+}

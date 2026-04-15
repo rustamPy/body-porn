@@ -1,0 +1,53 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Body Program Dashboard</title>
+    <link rel="stylesheet" href="./styles.css" />
+  </head>
+  <body>
+    <header class="hero">
+      <h1>Daily Ration & Gym Program</h1>
+      <p>Simple plan for meals, training and key nutrient intake.</p>
+    </header>
+
+    <main class="layout">
+      <section class="card" aria-labelledby="ration-title">
+        <h2 id="ration-title">Daily Ration</h2>
+        <table>
+          <thead>
+            <tr>
+              <th>Meal</th>
+              <th>Menu</th>
+              <th>Protein</th>
+            </tr>
+          </thead>
+          <tbody id="ration-table"></tbody>
+        </table>
+      </section>
+
+      <section class="card" aria-labelledby="calendar-title">
+        <h2 id="calendar-title">Calendar</h2>
+        <div class="calendar-header">
+          <button id="prev-month" type="button" aria-label="Previous month">◀</button>
+          <p id="calendar-month" aria-live="polite"></p>
+          <button id="next-month" type="button" aria-label="Next month">▶</button>
+        </div>
+        <div id="calendar-grid" class="calendar-grid" role="grid"></div>
+      </section>
+
+      <section class="card" aria-labelledby="gym-title">
+        <h2 id="gym-title">Basic Gym Program (Strength)</h2>
+        <ul id="gym-list"></ul>
+      </section>
+
+      <section class="card" aria-labelledby="intake-title">
+        <h2 id="intake-title">Protein & Other Elements Intake</h2>
+        <div id="intake-grid" class="intake-grid"></div>
+      </section>
+    </main>
+
+    <script src="./script.js"></script>
+  </body>
+</html>
