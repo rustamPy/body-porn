@@ -222,7 +222,7 @@ function isInCalorieRange(calories, range) {
     return calories >= 200 && calories <= 300;
   }
   if (range === "300-400") {
-    return calories > 300 && calories <= 400;
+    return calories >= 300 && calories <= 400;
   }
   if (range === "400+") {
     return calories > 400;

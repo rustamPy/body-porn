@@ -82,21 +82,11 @@ body {
   width: 0%;
   height: 100%;
   background: linear-gradient(90deg, #22c55e, #2563eb);
-  animation: fillGoal 0.9s ease-out forwards;
 }
 
 .goal-note {
   margin: 0.6rem 0 0;
   color: #374151;
-}
-
-@keyframes fillGoal {
-  from {
-    width: 0%;
-  }
-  to {
-    width: 8%;
-  }
 }
 
 table {
