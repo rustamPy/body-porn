@@ -137,7 +137,8 @@ function escapeHtml(value) {
     .replace(/</g, "&lt;")
     .replace(/>/g, "&gt;")
     .replace(/"/g, "&quot;")
-    .replace(/'/g, "&#39;");
+    .replace(/'/g, "&#39;")
+    .replace(/`/g, "&#96;");
 }
 
 function parseCsv(text) {
@@ -225,7 +226,7 @@ function isInCalorieRange(calories, range) {
     return calories >= 300 && calories <= 400;
   }
   if (range === "400+") {
-    return calories > 400;
+    return calories >= 400;
   }
   return true;
 }
@@ -369,7 +370,9 @@ async function loadRecipes() {
   try {
     const response = await fetch("./healthy-recipes.csv");
     if (!response.ok) {
-      throw new Error(`Request failed with ${response.status}`);
+      throw new Error(
+        `Request failed with ${response.status}: ${response.statusText}`
+      );
     }
 
     const csvText = await response.text();
