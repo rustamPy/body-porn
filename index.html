@@ -10,9 +10,22 @@
     <header class="hero">
       <h1>Daily Ration & Gym Program</h1>
       <p>Simple plan for meals, training and key nutrient intake.</p>
+      <nav class="hero-nav" aria-label="Main navigation">
+        <a href="#goal-section">Weight Goal</a>
+        <a href="#recipes-section">Recipes</a>
+      </nav>
     </header>
 
     <main class="layout">
+      <section class="card goal-card" id="goal-section" aria-labelledby="goal-title">
+        <h2 id="goal-title">Weight Loss Goal</h2>
+        <p class="goal-text">Current: <strong>91 kg</strong> → Goal: <strong>80 kg</strong></p>
+        <div class="goal-progress" role="progressbar" aria-label="Weight loss progress" aria-valuemin="80" aria-valuemax="91" aria-valuenow="91">
+          <div class="goal-progress-fill"></div>
+        </div>
+        <p class="goal-note">Stay consistent. Every healthy meal gets you closer. 💪</p>
+      </section>
+
       <section class="card" aria-labelledby="ration-title">
         <h2 id="ration-title">Daily Ration</h2>
         <table>
@@ -45,6 +58,48 @@
       <section class="card" aria-labelledby="intake-title">
         <h2 id="intake-title">Protein & Other Elements Intake</h2>
         <div id="intake-grid" class="intake-grid"></div>
+      </section>
+
+      <section class="card recipes-card" id="recipes-section" aria-labelledby="recipes-title">
+        <h2 id="recipes-title">Healthy Recipe Browser</h2>
+        <div class="recipe-controls">
+          <input id="search-input" type="search" placeholder="Search by recipe name or ingredients/instructions..." aria-label="Search recipes" />
+          <select id="meal-filter" aria-label="Filter by meal type">
+            <option value="all">All meal types</option>
+            <option value="Breakfast">Breakfast</option>
+            <option value="Lunch">Lunch</option>
+          </select>
+          <select id="calorie-filter" aria-label="Filter by calorie range">
+            <option value="all">All calories</option>
+            <option value="200-300">200-300</option>
+            <option value="300-400">300-400</option>
+            <option value="400+">400+</option>
+          </select>
+          <select id="protein-filter" aria-label="Filter by protein content">
+            <option value="all">All protein levels</option>
+            <option value="high">High protein (25g+)</option>
+            <option value="medium">Medium protein (15-24g)</option>
+            <option value="low">Low protein (&lt;15g)</option>
+          </select>
+          <select id="fiber-filter" aria-label="Filter by fiber content">
+            <option value="all">All fiber levels</option>
+            <option value="high">High fiber (10g+)</option>
+            <option value="medium">Medium fiber (6-9g)</option>
+            <option value="low">Low fiber (&lt;6g)</option>
+          </select>
+          <select id="sort-select" aria-label="Sort recipes">
+            <option value="name-asc">Sort: Name A-Z</option>
+            <option value="name-desc">Sort: Name Z-A</option>
+            <option value="calories-asc">Sort: Calories ↑</option>
+            <option value="calories-desc">Sort: Calories ↓</option>
+            <option value="protein-desc">Sort: Protein ↓</option>
+            <option value="protein-asc">Sort: Protein ↑</option>
+            <option value="fiber-desc">Sort: Fiber ↓</option>
+            <option value="fiber-asc">Sort: Fiber ↑</option>
+          </select>
+        </div>
+        <p id="recipes-status" class="recipes-status" aria-live="polite">Loading recipes...</p>
+        <div id="recipes-grid" class="recipes-grid"></div>
       </section>
     </main>
 
