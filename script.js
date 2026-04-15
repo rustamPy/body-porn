@@ -128,8 +128,36 @@ const calorieFilter = document.getElementById("calorie-filter");
 const proteinFilter = document.getElementById("protein-filter");
 const fiberFilter = document.getElementById("fiber-filter");
 const sortSelect = document.getElementById("sort-select");
+const goalProgress = document.getElementById("goal-progress");
+const goalProgressFill = document.getElementById("goal-progress-fill");
+
+const recipeControls = [
+  searchInput,
+  mealFilter,
+  calorieFilter,
+  proteinFilter,
+  fiberFilter,
+  sortSelect
+];
 
 let allRecipes = [];
+
+function updateGoalProgress() {
+  if (!goalProgress || !goalProgressFill) {
+    return;
+  }
+
+  const startWeight = Number(goalProgress.dataset.startWeight);
+  const currentWeight = Number(goalProgress.dataset.currentWeight);
+  const goalWeight = Number(goalProgress.dataset.goalWeight);
+  const totalToLose = startWeight - goalWeight;
+  const lostSoFar = startWeight - currentWeight;
+  const rawPercent = totalToLose > 0 ? (lostSoFar / totalToLose) * 100 : 0;
+  const progressPercent = Math.max(0, Math.min(100, rawPercent));
+
+  goalProgress.setAttribute("aria-valuenow", String(Math.round(progressPercent)));
+  goalProgressFill.style.width = `${progressPercent}%`;
+}
 
 function escapeHtml(value) {
   return String(value)
@@ -308,16 +336,7 @@ function renderRecipes(recipes) {
 }
 
 function updateActiveFilterStyles() {
-  const controls = [
-    searchInput,
-    mealFilter,
-    calorieFilter,
-    proteinFilter,
-    fiberFilter,
-    sortSelect
-  ];
-
-  controls.forEach((control) => {
+  recipeControls.forEach((control) => {
     const isActive =
       control === sortSelect
         ? control.value !== "name-asc"
@@ -392,11 +411,10 @@ async function loadRecipes() {
   }
 }
 
-[searchInput, mealFilter, calorieFilter, proteinFilter, fiberFilter, sortSelect].forEach(
-  (control) => {
-    control.addEventListener("input", applyRecipeFilters);
-    control.addEventListener("change", applyRecipeFilters);
-  }
-);
+recipeControls.forEach((control) => {
+  control.addEventListener("input", applyRecipeFilters);
+  control.addEventListener("change", applyRecipeFilters);
+});
 
+updateGoalProgress();
 loadRecipes();
