@@ -1,29 +1,4 @@
-const ration = [
-  {
-    meal: "Breakfast",
-    menu: "Oatmeal, 2 eggs, banana, yogurt",
-    protein: "32 g"
-  },
-  {
-    meal: "Lunch",
-    menu: "Chicken breast, rice, vegetable salad",
-    protein: "45 g"
-  },
-  {
-    meal: "Supper",
-    menu: "Salmon, potatoes, cottage cheese",
-    protein: "42 g"
-  }
-];
-
-const gymProgram = [
-  "Squat — 4x6",
-  "Deadlift — 3x5",
-  "Bench Press — 4x6",
-  "Overhead Press — 3x8",
-  "Pull-Ups — 4x max",
-  "Barbell Row — 4x8"
-];
+const today = new Date();
 
 const intake = [
   { label: "Protein", value: "120 g" },
@@ -34,19 +9,81 @@ const intake = [
   { label: "Calories", value: "2350 kcal" }
 ];
 
+// Dynamic Ration - will initialize after helper functions are defined
+let allRecipesForRation = [];
 const rationTable = document.getElementById("ration-table");
-ration.forEach(({ meal, menu, protein }) => {
-  const row = document.createElement("tr");
-  row.innerHTML = `<td>${meal}</td><td>${menu}</td><td>${protein}</td>`;
-  rationTable.appendChild(row);
-});
+const refreshRationButton = document.getElementById("refresh-ration");
 
-const gymList = document.getElementById("gym-list");
-gymProgram.forEach((exercise) => {
-  const item = document.createElement("li");
-  item.textContent = exercise;
-  gymList.appendChild(item);
-});
+const gymProgram = {
+  "Monday - Chest & Triceps": [
+    "Bench Press — 4x6",
+    "Incline Dumbbell Press — 4x8",
+    "Cable Flyes — 3x10",
+    "Tricep Dips — 4x8",
+    "Tricep Rope Pushdown — 3x10"
+  ],
+  "Tuesday - Back & Biceps": [
+    "Deadlift — 3x5",
+    "Barbell Row — 4x6",
+    "Pull-Ups — 4x max",
+    "Barbell Curl — 3x8",
+    "Face Pulls — 3x12"
+  ],
+  "Wednesday - Legs": [
+    "Squat — 4x6",
+    "Romanian Deadlift — 3x8",
+    "Leg Press — 3x10",
+    "Leg Curl — 3x10",
+    "Calf Raises — 4x12"
+  ],
+  "Thursday - Shoulders & Accessories": [
+    "Overhead Press — 4x6",
+    "Lateral Raise — 3x10",
+    "Reverse Pec Deck — 3x12",
+    "Shrugs — 3x8",
+    "Plank — 3x60s"
+  ],
+  "Friday - Full Body": [
+    "Barbell Squat — 3x5",
+    "Bench Press — 3x6",
+    "Barbell Row — 3x6",
+    "Overhead Press — 3x8",
+    "Dumbbell Rows — 3x8"
+  ]
+};
+
+const gymDayMap = {
+  1: "Monday - Chest & Triceps",
+  2: "Tuesday - Back & Biceps",
+  3: "Wednesday - Legs",
+  4: "Thursday - Shoulders & Accessories",
+  5: "Friday - Full Body"
+};
+
+const gymContainer = document.getElementById("gym-container");
+const todayDow = today.getDay(); // 0=Sun, 1=Mon … 6=Sat
+const todayGymDay = gymDayMap[todayDow];
+
+if (!todayGymDay) {
+  const rest = document.createElement("p");
+  rest.className = "gym-rest";
+  rest.textContent = "Rest day — recover and recharge! 🛌";
+  gymContainer.appendChild(rest);
+} else {
+  const dayLabel = document.createElement("p");
+  dayLabel.className = "gym-day-label";
+  dayLabel.textContent = todayGymDay;
+  gymContainer.appendChild(dayLabel);
+
+  const list = document.createElement("ul");
+  list.className = "gym-list";
+  gymProgram[todayGymDay].forEach((exercise) => {
+    const item = document.createElement("li");
+    item.textContent = exercise;
+    list.appendChild(item);
+  });
+  gymContainer.appendChild(list);
+}
 
 const intakeGrid = document.getElementById("intake-grid");
 intake.forEach(({ label, value }) => {
@@ -62,7 +99,6 @@ const prevMonthButton = document.getElementById("prev-month");
 const nextMonthButton = document.getElementById("next-month");
 
 const dayNames = ["Mon", "Tue", "Wed", "Thu", "Fri", "Sat", "Sun"];
-const today = new Date();
 let current = new Date(today.getFullYear(), today.getMonth(), 1);
 
 function renderCalendar(date) {
@@ -246,6 +282,57 @@ function toRecipes(csvText) {
     });
 }
 
+// Dynamic Ration Functions
+function getRandomRecipeByMealType(mealType) {
+  const filtered = allRecipesForRation.filter(r => r.mealType === mealType);
+  if (filtered.length === 0) return null;
+  return filtered[Math.floor(Math.random() * filtered.length)];
+}
+
+function renderRation() {
+  rationTable.innerHTML = "";
+
+  const mealMapping = {
+    "Breakfast": "Breakfast",
+    "Lunch": "Lunch",
+    "Dinner": "Supper"
+  };
+
+  Object.entries(mealMapping).forEach(([recipeType, displayName]) => {
+    const recipe = getRandomRecipeByMealType(recipeType);
+    if (!recipe) return;
+
+    const card = document.createElement("div");
+    card.className = "ration-card";
+    card.innerHTML = `
+      <span class="ration-meal-tag">${displayName}</span>
+      <p class="ration-name">${escapeHtml(recipe.name)}</p>
+      <div class="ration-meta">
+        <span>${recipe.protein.toFixed(0)} g protein</span>
+        <span>${recipe.calories} kcal</span>
+      </div>
+    `;
+    rationTable.appendChild(card);
+  });
+}
+
+async function loadRationRecipes() {
+  try {
+    const response = await fetch("./healthy-recipes-ru.csv");
+    if (!response.ok) throw new Error("Failed to load recipes for ration");
+
+    const csvText = await response.text();
+    allRecipesForRation = toRecipes(csvText);
+
+    renderRation();
+  } catch (error) {
+    console.error("Error loading ration recipes:", error);
+    rationTable.innerHTML = "<p style='color:#6b7280;font-style:italic'>Unable to load daily ration</p>";
+  }
+}
+
+refreshRationButton.addEventListener("click", renderRation);
+
 function isInCalorieRange(calories, range) {
   if (range === "under-200") {
     return calories < 200;
@@ -390,7 +477,7 @@ async function loadRecipes() {
   recipesGrid.innerHTML = "";
 
   try {
-    const response = await fetch("./healthy-recipes.csv");
+    const response = await fetch("./healthy-recipes-ru.csv");
     if (!response.ok) {
       throw new Error(
         `Request failed with ${response.status}: ${response.statusText}`
@@ -421,3 +508,4 @@ recipeControls.forEach((control) => {
 
 updateGoalProgress();
 loadRecipes();
+loadRationRecipes();
